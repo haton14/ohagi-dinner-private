@@ -5,3 +5,15 @@ CREATE TABLE food (
   created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE dinner (
+  id integer PRIMARY KEY AUTOINCREMENT,
+  created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+)
+
+CREATE TABLE dinner_menu (
+  dinner_id integer NOT NULL,
+  food_id integer NOT NULL,
+  quantity real NOT NULL
+)

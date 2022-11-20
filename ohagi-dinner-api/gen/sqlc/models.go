@@ -8,6 +8,18 @@ import (
 	"time"
 )
 
+type Dinner struct {
+	ID        int64
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+type DinnerMenu struct {
+	DinnerID int64
+	FoodID   int64
+	Quantity float64
+}
+
 type Food struct {
 	ID        int64
 	Name      string

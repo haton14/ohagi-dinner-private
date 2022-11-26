@@ -1,0 +1,6 @@
+dbs:
+  - path: dinner.db
+    replicas:
+      - type:   gcs
+        bucket: ohagi-dinner-private-storage
+        path:   dinner.db

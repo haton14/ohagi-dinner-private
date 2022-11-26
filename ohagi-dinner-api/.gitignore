@@ -1,2 +1,6 @@
 ohagi-dinner-api
 !/cmd/ohagi-dinner-api
+.dinner.db-litestream
+dinner.db
+dinner.db-shm
+dinner.db-wal

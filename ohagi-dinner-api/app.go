@@ -1,6 +1,7 @@
 package ohagidinnerprivate
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -29,7 +30,7 @@ func (a App) Start() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000"
+		port = "8080"
 	}
-	log.Panicln(a.echo.Start(port))
+	log.Panicln(a.echo.Start(fmt.Sprint(":", port)))
 }

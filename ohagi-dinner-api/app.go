@@ -22,6 +22,7 @@ func (a App) Start() {
 	a.echo.GET("/dinners", a.listDinner)
 	a.echo.POST("/dinners", a.createDinner)
 
+	a.echo.GET("/foods", a.listFood)
 	a.echo.POST("/foods", a.createFood)
 
 	a.echo.GET("/menus/:id", a.getMenu)

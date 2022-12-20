@@ -33,6 +33,7 @@ func (a App) listDinner(c echo.Context) error {
 	sort.SliceStable(data, func(i, j int) bool { return data[i].Name < data[j].Name })
 	sort.SliceStable(data, func(i, j int) bool { return data[i].ID < data[j].ID })
 
+	// menuレコードの1/3もdinnerはないので最低限の容量を事前確保する
 	dinners := make([]dinner, 0, len(data)/3)
 	var currentDinnerID int64
 	menus := make([]menu, 0, 3)

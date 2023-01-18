@@ -1,18 +1,14 @@
-// See https://kit.svelte.dev/docs/types#app
-// for information about these interfaces
-// and what to do when importing types
+/// <reference types="@sveltejs/kit" />
+/// <reference types="@sveltejs/adapter-cloudflare-workers" />
+
 declare namespace App {
 	// interface Error {}
-	interface Locals { }
+	// interface Locals {}
 	// interface PageData {}
 	interface Platform {
-		env: {
-			COUNTER: DurableObjectNamespace;
-		};
-		context: {
-			waitUntil(promise: Promise<any>): void;
-		};
-		caches: CacheStorage & { default: Cache }
+	  env: {
+		YOUR_KV_NAMESPACE: KVNamespace
+		YOUR_DURABLE_OBJECT_NAMESPACE: DurableObjectNamespace
+	  }
 	}
-
-}
+  }

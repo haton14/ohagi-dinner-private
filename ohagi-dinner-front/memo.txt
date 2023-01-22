@@ -1,0 +1,45 @@
+docker tag 43f14cbd7562 \
+asia-northeast1-docker.pkg.dev/ohagi-dinner-private/ohagi-dinner-private-api:latest
+
+docker push asia-northeast1-docker.pkg.dev/ohagi-dinner-private/ohagi-dinner-private-api:latest
+
+gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+
+
+
+IMAGE_NAME=ohagi-dinner-private-api
+HOST_NAME=asia-northeast1-docker.pkg.dev
+PROJECT_ID=ohagi-dinner-private
+REPOSITORY_NAME=ohagi-dinner-private-api
+
+gcloud builds submit --region=asia-east1
+
+docker build --no-cache ./ -t $IMAGE_NAME
+
+
+gcloud run services add-iam-policy-binding ohagi-dinner-private-api \
+--member='takumi:etjam14@gmail.com' \
+--role='roles/run.invoker'
+
+gcloud run deploy SERVICE --image IMAGE_URL
+
+// URL取得
+gcloud run services describe ohagi-dinner-private-api --format 'value(status.url)'
+
+curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" https://ohagi-dinner-private-api-gq25otekdq-an.a.run
+
+
+
+netsh interface portproxy add v4tov4 listenport=5173 listenaddress=0.0.0.0 connectport=5173 connectaddress=172.24.243.105
+
+ポートフォワーディングを設定
+> netsh.exe interface portproxy add v4tov4 listenaddress=192.168.11.18 listenport=5173 connectaddress=172.18.142.8 connectport=5173
+
+設定確認
+> netsh.exe interface portproxy show v4tov4
+
+削除するときは以下
+> netsh.exe interface portproxy delete v4tov4 listenport=3000 listenaddress=＜ローカルマシンのipアドレス＞
+netsh.exe interface portproxy delete v4tov4 listenport=5173 listenaddress=192.168.11.18
+netsh.exe interface portproxy delete v4tov4 listenport=5173 listenaddress=0.0.0.0

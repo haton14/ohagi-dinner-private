@@ -1,0 +1,1 @@
+export const host:string ='https://api.private.ohagi.link'

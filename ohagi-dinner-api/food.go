@@ -17,8 +17,8 @@ type food struct {
 	ID        int64  `json:"id"`
 	Name      string `json:"name"`
 	Unit      string `json:"unit"`
-	CreatedAt int64  `json:"created_at"`
-	UpdatedAt int64  `json:"updated_at"`
+	CreatedAt int64  `json:"createdAt"`
+	UpdatedAt int64  `json:"updatedAt"`
 }
 
 func (a App) listFood(c echo.Context) error {

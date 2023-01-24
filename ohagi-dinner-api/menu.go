@@ -12,14 +12,14 @@ type menuGetRequest struct {
 }
 
 type menuGetResponse struct {
-	DinnerID  int64        `json:"dinner_id"`
+	DinnerID  int64        `json:"dinnerId"`
 	Menus     []menuDetail `json:"menu"`
-	CreatedAt int64        `json:"created_at"`
-	UpdatedAt int64        `json:"updated_at"`
+	CreatedAt int64        `json:"createdAt"`
+	UpdatedAt int64        `json:"updatedAt"`
 }
 
 type menuDetail struct {
-	FoodID   int64   `json:"food_id"`
+	FoodID   int64   `json:"foodId"`
 	Name     string  `json:"name"`
 	Quantity float64 `json:"quantity"`
 	Unit     string  `json:"unit"`
@@ -60,8 +60,8 @@ func (a App) getMenu(c echo.Context) error {
 }
 
 type menuPost struct {
-	DinnerID int64   `json:"dinner_id"`
-	FoodID   int64   `json:"food_id"`
+	DinnerID int64   `json:"dinnerId"`
+	FoodID   int64   `json:"foodId"`
 	Quantity float64 `json:"quantity"`
 }
 
@@ -87,8 +87,8 @@ func (a App) createMenu(c echo.Context) error {
 }
 
 type menuPatch struct {
-	DinnerID int64   `json:"dinner_id"`
-	FoodID   int64   `json:"food_id"`
+	DinnerID int64   `json:"dinnerId"`
+	FoodID   int64   `json:"foodId"`
 	Quantity float64 `json:"quantity"`
 }
 

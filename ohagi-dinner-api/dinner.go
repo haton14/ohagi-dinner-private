@@ -14,8 +14,9 @@ type dinnerList struct {
 }
 
 type dinner struct {
-	ID    int64  `json:"id"`
-	Menus []menu `json:"menus"`
+	ID        int64  `json:"id"`
+	Menus     []menu `json:"menus"`
+	CreatedAt int64  `json:"createdAt"`
 }
 
 type menu struct {
@@ -40,8 +41,9 @@ func (a App) listDinner(c echo.Context) error {
 	for _, v := range data {
 		if currentDinnerID != v.ID {
 			dinners = append(dinners, dinner{
-				ID:    currentDinnerID,
-				Menus: menus,
+				ID:        currentDinnerID,
+				Menus:     menus,
+				CreatedAt: v.CreatedAt.Unix(),
 			})
 			currentDinnerID = v.ID
 			menus = make([]menu, 0, 3)

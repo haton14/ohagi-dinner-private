@@ -1,1 +1,1 @@
-export type UpdatedAt = number
+export type UpdatedAt = number;

@@ -3,6 +3,7 @@ package ohagidinnerprivate
 import (
 	"net/http"
 	"sort"
+	"time"
 
 	"github.com/haton14/ohagi-dinner-private/ohagi-dinner-api/gen/sqlc"
 	"github.com/haton14/ohagi-dinner-private/ohagi-dinner-api/utility"
@@ -68,7 +69,7 @@ func (a App) createDinner(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "bad request")
 	}
 
-	now := utility.NowInJST()
+	now := time.Now()
 	dinnerID, err := a.query.CreateDinnerAndReturnID(
 		c.Request().Context(),
 		sqlc.CreateDinnerAndReturnIDParams{
@@ -82,4 +83,28 @@ func (a App) createDinner(c echo.Context) error {
 	return c.JSON(http.StatusCreated, map[string]any{
 		"dinner_id": dinnerID,
 	})
+}
+
+type dinnerGet struct {
+	ID        int64 `param:"id" json:"id"`
+	CreatedAt int64 `json:"createdAt"`
+	UpdatedAt int64 `json:"updatedAt"`
+}
+
+func (a App) getDinner(c echo.Context) error {
+	dinner := dinnerGet{}
+	if err := c.Bind(&dinner); err != nil {
+		return c.String(http.StatusBadRequest, "bad request")
+	}
+
+	d, err := a.query.GetDinner(
+		c.Request().Context(),
+		dinner.ID,
+	)
+	if err != nil {
+		return c.String(http.StatusInternalServerError, "internal server error")
+	}
+	dinner.CreatedAt = d.CreatedAt.UnixMicro()
+	dinner.UpdatedAt = d.UpdatedAt.UnixMicro()
+	return c.JSON(http.StatusCreated, dinner)
 }

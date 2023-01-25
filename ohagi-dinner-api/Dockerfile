@@ -1,21 +1,20 @@
 # build
 FROM golang:1.19-bullseye as builder
 WORKDIR /app
-COPY ./ /app
-RUN go mod download -x
+COPY ./go.mod ./go.sum ./
+RUN go mod download
+COPY ./ ./
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build ./cmd/ohagi-dinner-api
 
 ## deploy
 FROM litestream/litestream:latest
 WORKDIR /app
-COPY my-secret.json /app/.gcs-credentials.json
-RUN cat /app/.gcs-credentials.json
-ENV GOOGLE_APPLICATION_CREDENTIALS /app/.gcs-credentials.json
-ENV TZ Asia/Tokyo
+COPY my-secret.json ./.gcs-credentials.json
+ENV GOOGLE_APPLICATION_CREDENTIALS ./.gcs-credentials.json
 
 COPY ./litestream.yml /etc/litestream.yml
-COPY --from=builder /app/ohagi-dinner-api /app
-COPY ./docker-entrypoint.sh /app
+COPY --from=builder /app/ohagi-dinner-api ./
+COPY ./docker-entrypoint.sh ./
 RUN apk add bash
 
 ENTRYPOINT ["bash","docker-entrypoint.sh"]

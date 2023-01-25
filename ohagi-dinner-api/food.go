@@ -3,9 +3,9 @@ package ohagidinnerprivate
 import (
 	"net/http"
 	"sort"
+	"time"
 
 	"github.com/haton14/ohagi-dinner-private/ohagi-dinner-api/gen/sqlc"
-	"github.com/haton14/ohagi-dinner-private/ohagi-dinner-api/utility"
 	"github.com/labstack/echo/v4"
 )
 
@@ -52,7 +52,7 @@ func (a App) createFood(c echo.Context) error {
 	if err := c.Bind(&food); err != nil {
 		return c.String(http.StatusBadRequest, "bad request")
 	}
-	now := utility.NowInJST()
+	now := time.Now()
 	err := a.query.CreateFood(
 		c.Request().Context(),
 		sqlc.CreateFoodParams{

@@ -20,6 +20,7 @@ func NewApp(echo *echo.Echo, query *sqlc.Queries) App {
 
 func (a App) Start() {
 	a.echo.GET("/dinners", a.listDinner)
+	a.echo.GET("/dinners/:id", a.getDinner)
 	a.echo.POST("/dinners", a.createDinner)
 
 	a.echo.GET("/foods", a.listFood)

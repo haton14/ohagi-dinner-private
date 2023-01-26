@@ -32,7 +32,7 @@ jobs:
           credentials_json: "${{ secrets.API_SA_KEY_FOR_DEPLOY }}"
 
       - name: Configure docker to use the gcloud cli
-        run: gcloud auth configure-docker --quiet
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
 
       - name: Build a docker image
         working-directory: ohagi-dinner-api

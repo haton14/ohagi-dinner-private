@@ -17,7 +17,7 @@ env:
   PORT: ${{ secrets.API_PORT }}
   GCP_PROJECT_ID: ${{ secrets.API_PROJECT_ID }}
   GCP_REGION: ${{ secrets.API_REGION }}
-  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.API_PROJECT_ID }}/${{ secrets.API_SERVICE_NAME }}/${{ secrets.API_SERVICE_NAME }}:${{ github.sha }}
+  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.API_PROJECT_ID }}/${{ secrets.API_SERVICE_NAME }}/${{ secrets.API_SERVICE_NAME }}
 
 jobs:
   deploy:
@@ -46,18 +46,21 @@ jobs:
         with:
           context: ./ohagi-dinner-api
           push: true
-          tags: ${{ env.IMAGE }}
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
       - name: Deploy to Cloud Run
         run: |
             gcloud run deploy ${{ env.SERVICE_NAME }} \
-              --image ${{ env.IMAGE }} \
+              --image ${{ env.IMAGE }}:latest \
               --port ${{ env.PORT }} \
               --project ${{ env.GCP_PROJECT_ID }} \
               --region ${{ env.GCP_REGION }} \
               --platform=managed \
               --allow-unauthenticated \
-              --quiet
+              --quiet \
+              --set-env-vars=PORT=80
 

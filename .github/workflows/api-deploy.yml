@@ -61,6 +61,5 @@ jobs:
               --region ${{ env.GCP_REGION }} \
               --platform=managed \
               --allow-unauthenticated \
-              --quiet \
-              --set-env-vars=PORT=80
+              --quiet
 

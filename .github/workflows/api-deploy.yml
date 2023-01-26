@@ -9,6 +9,7 @@ on:
       - 'ohagi-dinner-api/go.mod'
       - 'ohagi-dinner-api/go.sum'
       - 'ohagi-dinner-api/Dockerfile'
+      - 'ohagi-dinner-api/docker-entrypoint.sh'
       - 'ohagi-dinner-api/litestream.yml'
       - '.github/workflows/api-deploy.yml'
 

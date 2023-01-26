@@ -35,6 +35,7 @@ jobs:
         run: gcloud auth configure-docker --quiet
 
       - name: Build a docker image
+        working-directory: ohagi-dinner-api
         run: |
           echo "${{ secrets.API_SA_KEY_FOR_GCS }}" > my-secret.json
           docker build -t ${{ env.IMAGE }} .

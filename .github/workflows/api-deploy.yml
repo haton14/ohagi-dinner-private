@@ -36,7 +36,7 @@ jobs:
 
       - name: Build a docker image
         run: |
-        echo "${{ env.API_SA_KEY_FOR_GCS }}" > my-secret.json
+        echo "${{ secrets.API_SA_KEY_FOR_GCS }}" > my-secret.json
         docker build -t ${{ env.IMAGE }} .
 
       - name: Push the docker image

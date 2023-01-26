@@ -6,10 +6,12 @@ RUN go mod download
 COPY ./ ./
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build ./cmd/ohagi-dinner-api
 
-## deploy
+# deploy
 FROM litestream/litestream:latest
 WORKDIR /app
+#COPY my-secret.json /google_tmp/.gcs-credentials.json
 ENV GOOGLE_APPLICATION_CREDENTIALS /google_tmp/.gcs-credentials.json
+
 
 COPY ./litestream.yml /etc/litestream.yml
 COPY --from=builder /app/ohagi-dinner-api ./

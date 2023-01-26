@@ -17,7 +17,7 @@ env:
   PORT: ${{ secrets.API_PORT }}
   GCP_PROJECT_ID: ${{ secrets.API_PROJECT_ID }}
   GCP_REGION: ${{ secrets.API_REGION }}
-  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.API_PROJECT_ID }}/${{ secrets.API_SERVICE_NAME }}:${{ github.sha }}
+  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.API_PROJECT_ID }}/${{ secrets.API_SERVICE_NAME }}/${{ secrets.API_SERVICE_NAME }}:${{ github.sha }}
 
 jobs:
   deploy:

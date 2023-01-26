@@ -45,6 +45,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: ./ohagi-dinner-api
+          provenance: false
           push: true
           tags: |
             ${{ env.IMAGE }}:${{ github.sha }}

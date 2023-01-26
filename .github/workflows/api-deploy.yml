@@ -62,5 +62,6 @@ jobs:
               --region ${{ env.GCP_REGION }} \
               --platform=managed \
               --allow-unauthenticated \
-              --quiet
+              --quiet \
+              --update-secrets=PATH/app/.gcs-credentials.json=OHAGI_API_GOOGLE_APPLICATION_CREDENTIALS:latest
 

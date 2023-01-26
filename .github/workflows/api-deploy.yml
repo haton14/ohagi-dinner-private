@@ -1,0 +1,55 @@
+name: API Deploy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ohagi-dinner-api/**.go'
+      - 'ohagi-dinner-api/go.mod'
+      - 'ohagi-dinner-api/go.sum'
+      - 'ohagi-dinner-api/Dockerfile'
+      - 'ohagi-dinner-api/litestream.yml'
+      - '.github/workflows/api-deploy.yml'
+
+env:
+  SERVICE_NAME: ${{ secrets.API_SERVICE_NAME }}
+  PORT: ${{ secrets.API_PORT }}
+  GCP_PROJECT_ID: ${{ secrets.API_PROJECT_ID }}
+  GCP_REGION: ${{ secrets.API_REGION }}
+  IMAGE: asia-northeast1-docker.pkg.dev/${{ secrets.API_PROJECT_ID }}/${{ secrets.API_SERVICE_NAME }}:${{ github.sha }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{ secrets.API_SA_KEY_FOR_DEPLOY }}"
+
+      - name: Configure docker to use the gcloud cli
+        run: gcloud auth configure-docker --quiet
+
+      - name: Build a docker image
+        run: |
+        echo "${{ env.API_SA_KEY_FOR_GCS }}" > my-secret.json
+        docker build -t ${{ env.IMAGE }} .
+
+      - name: Push the docker image
+        run: docker push ${{ env.IMAGE }}
+
+      - name: Deploy to Cloud Run
+        run: |
+            gcloud run deploy ${{ env.SERVICE_NAME }} \
+              --image ${{ env.IMAGE }} \
+              --port ${{ env.PORT }} \
+              --project ${{ env.GCP_PROJECT_ID }} \
+              --region ${{ env.GCP_REGION }} \
+              --platform=managed \
+              --allow-unauthenticated \
+              --quiet \
+              --set-env-vars=PORT=80

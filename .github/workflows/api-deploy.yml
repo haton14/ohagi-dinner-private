@@ -43,9 +43,8 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v3
-        working-directory: ohagi-dinner-api
         with:
-          context: .
+          context: ./ohagi-dinner-api
           push: true
           tags: ${{ env.IMAGE }}
           cache-from: type=gha

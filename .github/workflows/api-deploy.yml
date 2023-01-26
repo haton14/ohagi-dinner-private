@@ -60,5 +60,5 @@ jobs:
               --platform=managed \
               --allow-unauthenticated \
               --quiet \
-              --set-secrets=GOOGLE_APPLICATION_CREDENTIALS=OHAGI_API_GOOGLE_APPLICATION_CREDENTIALS:latest
+              --update-secrets=/google_tmp/.gcs-credentials.json=OHAGI_API_GOOGLE_APPLICATION_CREDENTIALS:latest
 

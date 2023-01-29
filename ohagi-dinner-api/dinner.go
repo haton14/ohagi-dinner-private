@@ -60,7 +60,7 @@ func (a App) listDinner(c echo.Context) error {
 }
 
 type dinnerPost struct {
-	CreatedAt *int64 `json:"created_at"`
+	CreatedAt *int64 `json:"createdAt"`
 }
 
 func (a App) createDinner(c echo.Context) error {
@@ -81,7 +81,7 @@ func (a App) createDinner(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusCreated, map[string]any{
-		"dinner_id": dinnerID,
+		"dinnerId": dinnerID,
 	})
 }
 

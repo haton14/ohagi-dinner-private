@@ -1,5 +1,5 @@
 ## 方針
-### R API
+### REST API
 - DBはsqlite3でliteStreamを使いレプリケーションする
 - Cloud RunでREST API+LiteStreamをコンテナ上に稼働する
 ### Front

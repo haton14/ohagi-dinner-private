@@ -82,13 +82,14 @@ FROM dinner as dinner
   LEFT JOIN dinner_menu ON dinner.id = dinner_menu.dinner_id
   LEFT JOIN food ON dinner_menu.food_id = food.id
 `
-
+// sqlcのバグがあるので一時的に手動修正
+// https://github.com/kyleconroy/sqlc/issues/2044
 type ListMenuRow struct {
 	ID        int64
 	CreatedAt time.Time
-	Name      string
-	Quantity  float64
-	Unit      string
+	Name      *string
+	Quantity  *float64
+	Unit      *string
 }
 
 func (q *Queries) ListMenu(ctx context.Context) ([]ListMenuRow, error) {

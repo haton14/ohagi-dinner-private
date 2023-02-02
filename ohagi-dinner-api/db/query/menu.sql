@@ -5,8 +5,8 @@ SELECT dinner.id,
   dinner_menu.quantity,
   food.unit
 FROM dinner as dinner
-  INNER JOIN dinner_menu ON dinner.id = dinner_menu.dinner_id
-  INNER JOIN food ON dinner_menu.food_id = food.id;
+  LEFT JOIN dinner_menu ON dinner.id = dinner_menu.dinner_id
+  LEFT JOIN food ON dinner_menu.food_id = food.id;
 -- name: GetMenu :many
 SELECT food.id,
   food.name,

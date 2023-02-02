@@ -1,6 +1,7 @@
 package ohagidinnerprivate
 
 import (
+	"fmt"
 	"net/http"
 	"sort"
 	"time"
@@ -29,32 +30,40 @@ type menu struct {
 func (a App) listDinner(c echo.Context) error {
 	data, err := a.query.ListMenu(c.Request().Context())
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "internal server error")
+		fmt.Println(err)
+		return c.String(http.StatusInternalServerError, "internal server error\n")
 	}
 
-	sort.SliceStable(data, func(i, j int) bool { return data[i].Name < data[j].Name })
+	sort.SliceStable(data, func(i, j int) bool {
+		if data[i].Name == nil {
+			return true
+		}
+		if data[j].Name == nil {
+			return false
+		}
+		return *data[i].Name < *data[j].Name
+	})
 	sort.SliceStable(data, func(i, j int) bool { return data[i].ID < data[j].ID })
 
 	// menuレコードの1/3もdinnerはないので最低限の容量を事前確保する
 	dinners := make([]dinner, 0, len(data)/3)
 	var currentDinnerID int64
-	menus := make([]menu, 0, 3)
 	for _, v := range data {
 		if currentDinnerID != v.ID {
 			dinners = append(dinners, dinner{
-				ID:        currentDinnerID,
-				Menus:     menus,
+				ID:        v.ID,
+				Menus:     make([]menu, 0, 3),
 				CreatedAt: v.CreatedAt.Unix(),
 			})
 			currentDinnerID = v.ID
-			menus = make([]menu, 0, 3)
 		}
-		menus = append(menus, menu{
-			Name:     v.Name,
-			Quantity: v.Quantity,
-			Unit:     v.Unit,
-		})
-
+		if v.Name != nil {
+			dinners[len(dinners)-1].Menus = append(dinners[len(dinners)-1].Menus, menu{
+				Name:     *v.Name,
+				Quantity: *v.Quantity,
+				Unit:     *v.Unit,
+			})
+		}
 	}
 	return c.JSON(http.StatusOK, dinnerList{Dinners: dinners})
 }

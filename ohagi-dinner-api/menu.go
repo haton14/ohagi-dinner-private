@@ -1,6 +1,7 @@
 package ohagidinnerprivate
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/haton14/ohagi-dinner-private/ohagi-dinner-api/gen/sqlc"
@@ -28,17 +29,20 @@ type menuDetail struct {
 func (a App) getMenu(c echo.Context) error {
 	menuReqeust := menuGetRequest{}
 	if err := c.Bind(&menuReqeust); err != nil {
-		return c.String(http.StatusBadRequest, "bad request")
+		fmt.Println(err)
+		return c.String(http.StatusBadRequest, "bad request\n")
 	}
 
 	dinner, err := a.query.GetDinner(c.Request().Context(), menuReqeust.DinnerID)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "internal server error")
+		fmt.Println(err)
+		return c.String(http.StatusInternalServerError, "internal server error\n")
 	}
 
 	menus, err := a.query.GetMenu(c.Request().Context(), menuReqeust.DinnerID)
 	if err != nil {
-		return c.String(http.StatusInternalServerError, "internal server error")
+		fmt.Println(err)
+		return c.String(http.StatusInternalServerError, "internal server error\n")
 	}
 
 	menuDetails := make([]menuDetail, 0, len(menus))
@@ -68,6 +72,7 @@ type menuPost struct {
 func (a App) createMenu(c echo.Context) error {
 	menu := menuPost{}
 	if err := c.Bind(&menu); err != nil {
+		fmt.Println(err)
 		return c.String(http.StatusBadRequest, "bad request")
 	}
 
